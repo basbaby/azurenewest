@@ -10,8 +10,10 @@ variables:
   value: $(Pipeline.Workspace)/.m2/repository
 - name: MAVEN_OPTS
   value: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)  -s $(muleSettingsFile.secureFilePath) -Dsonar.login=4ad13676dc37c38930156dcff0a40c7e8f4647fd -Dsonar.host.url=http://104.248.169.167:9000 -Dkey=mymulesoft -DskipTests'
-- name: MAVEN_OPTS_TEST
-  value: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)  -s $(muleSettingsFile.secureFilePath)  -Dkey=mymulesoft '  
+- name: MAVEN_OPTS_TEST_MUNIT
+  value: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)  -s $(muleSettingsFile.secureFilePath)  -Dkey=mymulesoft -Dtestfile=src/test/javarunner.TestRunner.java'
+- name: MAVEN_OPTS_TEST_CUCUMBER
+  value: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)  -s $(muleSettingsFile.secureFilePath)  -Dkey=mymulesoft '    
 
 steps:
 - task: DownloadSecureFile@1
@@ -47,18 +49,7 @@ steps:
 - task: PublishPipelineArtifact@1
   inputs:
     targetPath: $(System.DefaultWorkingDirectory)
-    artifact: 'drop'
-- task: PublishTestResults@2
-  inputs:
-    testResultsFiles: '**/TEST-*.xml' 
-    #searchFolder: '$(System.DefaultWorkingDirectory)' # Optional
-    mergeTestResults: false # Optional
-    #failTaskOnFailedTests: false # Optional
-    # testRunTitle: APIOPS-MUNIT
-    #buildPlatform: # Optional
-    #buildConfiguration: # Optional
-    publishRunAttachments: true # Optional 
-  displayName: MUNIT Test  
+    artifact: 'drop'  
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
@@ -68,7 +59,28 @@ steps:
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.8'
     jdkArchitectureOption: 'x64'
-    goals: 'test $(MAVEN_OPTS_TEST)'
+    goals: 'test $(MAVEN_OPTS_TEST_MUNIT)'
+    sqMavenPluginVersionChoice: 'pom'
+  displayName: Munit Test
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: '**/TEST-*.xml' 
+    #searchFolder: '$(System.DefaultWorkingDirectory)' # Optional
+    mergeTestResults: true # Optional
+    #failTaskOnFailedTests: false # Optional
+    # testRunTitle: APIOPS-MUNIT
+    #buildPlatform: # Optional
+    #buildConfiguration: # Optional
+    publishRunAttachments: true # Optional 
+  displayName: MUNIT Test Publish
+- task: Maven@3
+  inputs:
+    mavenPomFile: 'pom.xml'
+    mavenOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    goals: 'test $(MAVEN_OPTS_TEST_CUCUMBER)'
     sqMavenPluginVersionChoice: 'pom'
   displayName: Cucumber Test
 - task: PublishTestResults@2
