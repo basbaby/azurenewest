@@ -90,12 +90,12 @@ steps:
     #buildConfiguration: # Optional
     publishRunAttachments: true # Optional 
   displayName: Cucumber publish Test 
-- task: PublishCucumberReport@1
-  inputs:
-    jsonDir: '$(System.DefaultWorkingDirectory)'
-    outputPath: '$(Sytem.DefaultWorkingDirectory)'
-    theme: 'bootstrap'
-    reportSuiteAsScenarios: true
+# - task: PublishCucumberReport@1
+#   inputs:
+#     jsonDir: '$(System.DefaultWorkingDirectory)'
+#     outputPath: '$(Sytem.DefaultWorkingDirectory)'
+#     theme: 'bootstrap'
+#     reportSuiteAsScenarios: true
 - task: PublishPipelineArtifact@1
   inputs:
     targetPath: $(System.DefaultWorkingDirectory)
