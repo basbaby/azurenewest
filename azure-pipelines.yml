@@ -81,8 +81,8 @@ steps:
   displayName: Functional Test 
 - task: PublishCucumberReport@1
   inputs:
-    jsonDir: '$(System.DefaultWorkingDirectory)/target/cucumber'
-    outputPath: '$(Sytem.DefaultWorkingDirectory)'
+    jsonDir: '$(System.DefaultWorkingDirectory)/target/cucmber'
+    outputPath: '$(Sytem.DefaultWorkingDirectory)/cucumber'
     theme: 'bootstrap'
     reportSuiteAsScenarios: true
 - task: PublishPipelineArtifact@1
