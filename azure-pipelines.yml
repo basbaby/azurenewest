@@ -45,11 +45,7 @@ steps:
     Contents: '**/target/*.jar'
     TargetFolder: $(Build.ArtifactStagingDirectory)
     CleanTargetFolder: true
-    flattenFolders: true    
-- task: PublishPipelineArtifact@1
-  inputs:
-    targetPath: $(System.DefaultWorkingDirectory)
-    artifact: 'drop'  
+    flattenFolders: true      
 - task: Maven@3
   inputs:
     mavenPomFile: 'pom.xml'
@@ -100,3 +96,7 @@ steps:
     outputPath: '$(Sytem.DefaultWorkingDirectory)'
     theme: 'bootstrap'
     reportSuiteAsScenarios: true
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: $(System.DefaultWorkingDirectory)
+    artifact: 'drop'
