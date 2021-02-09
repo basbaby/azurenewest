@@ -79,13 +79,13 @@ steps:
     goals: 'test $(MAVEN_OPTS_TEST_CUCUMBER)'
     sqMavenPluginVersionChoice: 'pom'
   displayName: Functional Test 
-- task: PublishCucumberReport@1
-  inputs:
-    jsonDir: '$(System.SourcesDirectory)/target/cucmber'
-    outputPath: '$(Sytem.SourcesDirectory)/cucumber'
-    theme: 'bootstrap'
-    reportSuiteAsScenarios: true
 - task: PublishPipelineArtifact@1
   inputs:
     targetPath: $(System.DefaultWorkingDirectory)
     artifact: 'drop'
+- task: PublishCucumberReport@1
+  inputs:
+    jsonDir: '$(System.DefaultWorkingDirectory)/drop/target/cucmber'
+    outputPath: '$(Sytem.DefaultWorkingDirectory)/drop/cucumber'
+    theme: 'bootstrap'
+    reportSuiteAsScenarios: true
