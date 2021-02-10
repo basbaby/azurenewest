@@ -11,7 +11,7 @@ variables:
 - name: MAVEN_OPTS
   value: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)  -s $(muleSettingsFile.secureFilePath) -Dkey=mymulesoft '
 - name: MAVEN_BUILD
-  value: '-Dsonar.login=4ad13676dc37c38930156dcff0a40c7e8f4647fd -Dsonar.host.url=http://104.248.169.167:9000 -Dsonar.sources=src/ -Dkey=mymulesoft -DskipTests'
+  value: '-Dkey=mymulesoft -DskipTests'
 - name: MAVEN_OPTS_TEST_CUCUMBER
   value: '-Dtestfile=src/test/javarunner.TestRunner.java'    
 
@@ -36,7 +36,6 @@ steps:
     jdkVersionOption: '1.8'
     jdkArchitectureOption: 'x64'
     goals: 'package $(MAVEN_OPTS) $(MAVEN_BUILD)'
-    sonarQubeRunAnalysis: true
     isJacocoCoverageReportXML: true
     sqMavenPluginVersionChoice: 'pom'
   displayName: Maven Build
