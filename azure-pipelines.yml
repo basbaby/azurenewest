@@ -9,11 +9,11 @@ variables:
 - name: MAVEN_CACHE_FOLDER
   value: $(Pipeline.Workspace)/.m2/repository
 - name: MAVEN_OPTS
-  value: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)  -s $(muleSettingsFile.secureFilePath) -Dsonar.login=4ad13676dc37c38930156dcff0a40c7e8f4647fd -Dsonar.host.url=http://104.248.169.167:9000 -Dkey=mymulesoft -DskipTests'
+  value: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)  -s $(muleSettingsFile.secureFilePath) -Dkey=mymulesoft'
+- name: MAVEN_BUILD
+  value: '-Dsonar.login=4ad13676dc37c38930156dcff0a40c7e8f4647fd -Dsonar.host.url=http://104.248.169.167:9000 -Dkey=mymulesoft -DskipTests'
 - name: MAVEN_OPTS_TEST_CUCUMBER
-  value: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)  -s $(muleSettingsFile.secureFilePath)  -Dkey=mymulesoft -Dtestfile=src/test/javarunner.TestRunner.java'
-- name: MAVEN_OPTS_TEST_MUNIT
-  value: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)  -s $(muleSettingsFile.secureFilePath)  -Dkey=mymulesoft '    
+  value: '-Dtestfile=src/test/javarunner.TestRunner.java'    
 
 steps:
 - task: DownloadSecureFile@1
@@ -55,7 +55,7 @@ steps:
 #     javaHomeOption: 'JDKVersion'
 #     jdkVersionOption: '1.8'
 #     jdkArchitectureOption: 'x64'
-#     goals: 'test $(MAVEN_OPTS_TEST_MUNIT)'
+#     goals: 'test $(MAVEN_OPTS)'
 #     sqMavenPluginVersionChoice: 'pom'
 #   displayName: Munit Test
 # - task: PublishTestResults@2
@@ -76,7 +76,7 @@ steps:
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.8'
     jdkArchitectureOption: 'x64'
-    goals: 'test $(MAVEN_OPTS_TEST_CUCUMBER)'
+    goals: 'test $(MAVEN_OPTS) $(MAVEN_OPTS_TEST_CUCUMBER)'
     sqMavenPluginVersionChoice: 'pom'
   displayName: Functional Test 
 - task: PublishPipelineArtifact@1
@@ -85,7 +85,7 @@ steps:
     artifact: 'drop'
 - task: PublishCucumberReport@1
   inputs:
-    jsonDir: '$(System.DefaultWorkingDirectory)/drop/target/cucumber'
-    outputPath: 'drop/cucumber'
+    jsonDir: '$(System.DefaultWorkingDirectory)/drop/target/'
+    outputPath: '$(System.DefaultWorkingDirectory)'
     theme: 'bootstrap'
     reportSuiteAsScenarios: true
