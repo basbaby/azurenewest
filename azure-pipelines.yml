@@ -13,7 +13,7 @@ variables:
 - name: MAVEN_BUILD
   value: '-Dkey=mymulesoft -DskipTests'
 - name: MAVEN_OPTS_TEST_CUCUMBER
-  value: '-Dtestfile=src/test/javarunner.TestRunner.java'    
+  value: '-Dtestfile=src/test/javarunner.TestRunner.java -DskipTests'    
 
 steps:
 - task: DownloadSecureFile@1
