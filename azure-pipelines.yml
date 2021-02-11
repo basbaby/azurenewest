@@ -13,7 +13,7 @@ variables:
 - name: MAVEN_BUILD
   value: '-Dkey=mymulesoft -DskipTests'
 - name: MAVEN_OPTS_TEST_CUCUMBER
-  value: '-Dtestfile=src/test/javarunner.TestRunner.java -DskipTests'    
+  value: '-Dtestfile=src/test/javarunner.TestRunner.java '    
 
 steps:
 - task: DownloadSecureFile@1
@@ -85,6 +85,6 @@ steps:
 - task: PublishCucumberReport@1
   inputs:
     jsonDir: '$(System.DefaultWorkingDirectory)/drop/target/'
-    outputPath: '$(System.DefaultWorkingDirectory)'
+    outputPath: ''
     theme: 'bootstrap'
     reportSuiteAsScenarios: true
